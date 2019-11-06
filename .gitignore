@@ -1,0 +1,8 @@
+.vscode/settings.json
+close-tickets/.classpath
+close-tickets/.project
+close-tickets/.settings/org.eclipse.jdt.apt.core.prefs
+close-tickets/.settings/org.eclipse.jdt.core.prefs
+close-tickets/.settings/org.eclipse.m2e.core.prefs
+*.jar
+close-tickets/target/
