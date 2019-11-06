@@ -1,8 +1,11 @@
 package com.outreach.zenhub;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
+import java.util.Properties;
 
 import org.junit.Test;
 
@@ -43,5 +46,13 @@ public class MainTest
     @Test(expected = IllegalArgumentException.class)
     public void testNullCLIConversion() {
         Main.getCLIMap(null);
+    }
+
+    @Test
+    public void testReadProps() {
+        Properties props = Main.getPropertiesFile("src/test/resources/properties/properties.properties");
+        String github_base_url = props.getProperty("github_base_url");
+
+        assertEquals("https://api.github.com", github_base_url);
     }
 }
