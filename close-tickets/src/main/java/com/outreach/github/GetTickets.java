@@ -13,6 +13,9 @@ public class GetTickets {
         if (page_number < 0) {
             throw new IllegalArgumentException("Cannot have a negative number");
         }
+
+        // TODO this needs to be changed
+        return null;
     }
 
     public class Tickets {

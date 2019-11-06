@@ -12,9 +12,18 @@ public class Main {
 
     // This is the main class for the CLI
     public static void main(String[] args) {
-        
+
+        log.info("Initializing..");
+
+        Main.getCLIMap(args);
     }
 
+    /**
+     * Parse the CLI args to a map in order to be able to retrieve them faster
+     * The CLI args must be in the following format entry_1=val_1, entry_2=val_2, ..., entry_n=val_n
+     * @param args The command line arguments
+     * @return A map representation of the CLI args
+     */
     public static Map<String, String> getCLIMap(String[] args) {
         if (args == null) {
             throw new IllegalArgumentException("The arguments are empty, provide the correct CLI params");
