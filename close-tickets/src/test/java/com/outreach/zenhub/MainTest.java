@@ -50,7 +50,7 @@ public class MainTest
 
     @Test
     public void testReadProps() {
-        Properties props = Main.getPropertiesFile("src/test/resources/properties/properties.properties");
+        Properties props = Main.getPropertiesFile("C:\Users\Pat\Documents/repos/Zenhub-Utils/close-tickets/src/test/resources/properties/properties.properties");
         String github_base_url = props.getProperty("github_base_url");
 
         assertEquals("https://api.github.com", github_base_url);
