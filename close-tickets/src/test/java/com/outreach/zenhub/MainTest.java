@@ -13,7 +13,7 @@ import org.junit.Test;
 public class MainTest
 {
 
-    public final String URI = "/close-tickets/src/test/resources/properties/properties.properties";
+    public final String URI = "/src/test/resources/properties/properties.properties";
 
     @Test
     public void testImproperCLIConversion() {

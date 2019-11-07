@@ -11,6 +11,9 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gson.JsonArray;
+import com.outreach.github.GH_Tickets;
+
 public class Main {
 
     private static Logger log = Logger.getLogger(Main.class.getName());
@@ -21,10 +24,40 @@ public class Main {
         log.info("Initializing..");
 
         Map<String, String> parsed_args = Main.getCLIMap(args);
-
         Properties props = Main.getPropertiesFile(parsed_args.get("properties_file"));
+        JsonArray gh_tickets = Main.getGitHubTickets(props);
+        JsonArray fitered_tickets = Main.filterForPipelineTickets(gh_tickets, props);
 
-        
+        log.info("Complete");
+    }
+
+    public static JsonArray getGitHubTickets(Properties props) {
+        log.info("Retrieving all tickets from Github");
+        JsonArray result = null;
+        try {
+            result = GH_Tickets.getAllGithubTickets(props);
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Failed to retrieve Github tickets", e);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Caught an exception when trying to retrieve Github tickets", e);
+        }
+        log.info("Retrieval completed successfully");
+        return result;
+    }
+
+    public static JsonArray filterForPipelineTickets(JsonArray gh_tickets, Properties props) {
+        log.info("Filtering out the tickets that are not in the desired pipeline");
+        JsonArray filter_gh_tickets = null;
+        try {
+            LookupTickets lookup = new LookupTickets(gh_tickets, props);
+            filter_gh_tickets = lookup.removeUnwantedTickets();
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Caught an IOException when filtering through Github tickets with Zenhub API", e);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Caught an Exception when filtering through Github tickets with Zenhub API", e);
+        }
+        log.info("Filter completed successfully");
+        return filter_gh_tickets;
     }
 
     /**

@@ -1,9 +1,8 @@
 package com.outreach.utils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,23 +20,29 @@ public class HttpHelper {
 
     private static Logger log = Logger.getLogger(HttpHelper.class.getName());
 
-    public static HttpRequestBase addHeaders(HttpRequestBase httpMethod, Map<String, String> headers) throws IllegalArgumentException {
+    public static String RESPONSE_CODE = "response_code";
+    public static String BODY = "body";
+
+    public static HttpRequestBase addHeaders(HttpRequestBase httpMethod, Map<String, String> headers)
+            throws IllegalArgumentException {
         if (httpMethod == null)
             throw new IllegalArgumentException("Cannot hava a null HTTP Object");
-    
-		if (headers != null && headers.size() > 0) {
+
+        if (headers != null && headers.size() > 0) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
                 httpMethod.setHeader(entry.getKey(), entry.getValue());
             }
         }
 
         return httpMethod;
-	}
+    }
 
-    public static String performGet(URL url, Map<String, String> headers) throws IOException {
+    public static Map<String, Object> performGet(URL url, Map<String, String> headers) throws IOException {
 
         if (url == null)
             throw new IllegalArgumentException("Cannot have an empty URL");
+
+        Map<String, Object> result = new HashMap<String, Object>();
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(url.toString());
@@ -51,15 +56,17 @@ public class HttpHelper {
         try {
             int response_code = response.getStatusLine().getStatusCode();
 
-            if (response_code / 100 == 2) {
-                entity = response.getEntity();
+            entity = response.getEntity();
 
-                body = IOUtils.toString(entity.getContent(), "UTF-8");
-            } else {
+            body = IOUtils.toString(entity.getContent(), "UTF-8");
+            result.put("body", body);
+            result.put("response_code", response_code);
+
+            if (response_code / 100 != 2) {
                 log.log(Level.SEVERE, "Received a " + response_code + " at " + url.toString());
             }
 
-            return body;
+            return result;
         } finally {
             if (entity != null) {
                 // do something useful with the response body
@@ -71,5 +78,14 @@ public class HttpHelper {
                 response.close();
             }
         }
+    }
+
+    public static boolean wasRequestSuccessful(Map<String, Object> payload) {
+        if (payload != null) {
+            int response_code = (int) payload.get(HttpHelper.RESPONSE_CODE);
+            return ((response_code/100) == 2);
+        }
+
+        return false;
     }
 }
