@@ -78,7 +78,7 @@ public class LookupTicketsTest {
     @Test
     public void testFilterColumnQA() {
         JsonArray filteredTicket = new JsonArray();
-        this.lookupTickets.isTicketInDesiredColumn(this.zenhub_ticket, filteredTicket);
+        this.lookupTickets.isTicketInDesiredColumn(this.zenhub_ticket, new JsonObject(), filteredTicket);
 
         assertEquals(1, filteredTicket.size());
     }
@@ -86,7 +86,7 @@ public class LookupTicketsTest {
     @Test
     public void testFilterColumnReview() {
         JsonArray filteredTicket = new JsonArray();
-        this.lookupTickets.isTicketInDesiredColumn(this.zenhub_ticket_review, filteredTicket);
+        this.lookupTickets.isTicketInDesiredColumn(this.zenhub_ticket_review, new JsonObject(),filteredTicket);
 
         assertEquals(0, filteredTicket.size());
     }

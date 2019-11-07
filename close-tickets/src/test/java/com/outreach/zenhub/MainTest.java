@@ -2,6 +2,8 @@ package com.outreach.zenhub;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
@@ -13,7 +15,11 @@ import org.junit.Test;
 public class MainTest
 {
 
-    public final String URI = "/src/test/resources/properties/properties.properties";
+    public final String URI = File.separator + "src" +
+                                File.separator + "test" +
+                                File.separator + "resources" +
+                                File.separator + "properties" +
+                                File.separator + "properties.properties.template";
 
     @Test
     public void testImproperCLIConversion() {

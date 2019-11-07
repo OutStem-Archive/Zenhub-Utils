@@ -26,8 +26,8 @@ public class Main {
         Map<String, String> parsed_args = Main.getCLIMap(args);
         Properties props = Main.getPropertiesFile(parsed_args.get("properties_file"));
         JsonArray gh_tickets = Main.getGitHubTickets(props);
-        JsonArray fitered_tickets = Main.filterForPipelineTickets(gh_tickets, props);
-
+        JsonArray fitered_gh_tickets = Main.filterForPipelineTickets(gh_tickets, props);
+        Main.moveFilteredTickets(fitered_gh_tickets, props);
         log.info("Complete");
     }
 
@@ -35,7 +35,8 @@ public class Main {
         log.info("Retrieving all tickets from Github");
         JsonArray result = null;
         try {
-            result = GH_Tickets.getAllGithubTickets(props);
+            GH_Tickets gh_tickets = new GH_Tickets(props);
+            result = gh_tickets.getAllGithubTickets();
         } catch (IOException e) {
             log.log(Level.SEVERE, "Failed to retrieve Github tickets", e);
         } catch (Exception e) {
@@ -58,6 +59,21 @@ public class Main {
         }
         log.info("Filter completed successfully");
         return filter_gh_tickets;
+    }
+
+    public static JsonArray moveFilteredTickets(JsonArray gh_tickets, Properties props) {
+        log.info("About to move the tickets to the appropriate pipeline");
+        JsonArray result = null;
+        try {
+            GH_Tickets gh_tickets_obj = new GH_Tickets(props);
+            result = gh_tickets_obj.moveTickets(gh_tickets);
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Failed to close Github tickets", e);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Caught an exception when trying to move Github tickets", e);
+        }
+        log.info("Moving completed successfully");
+        return result;
     }
 
     /**

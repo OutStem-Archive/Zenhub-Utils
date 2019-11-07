@@ -12,7 +12,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.outreach.utils.FileUtils;
 import com.outreach.utils.HttpHelper;
 
 public class LookupTickets {
@@ -23,6 +22,8 @@ public class LookupTickets {
     private String zenhub_issue_url;
     private String zenhub_auth_token;
     private String column;
+
+    private static Logger log = Logger.getLogger(LookupTickets.class.getName());
 
     public LookupTickets(JsonArray githubtickets, Properties props) throws IllegalArgumentException {
         if (githubtickets == null)
@@ -37,6 +38,8 @@ public class LookupTickets {
         this.zenhub_issue_url = this.props.getProperty("zenhub_base_url");
         this.zenhub_auth_token = this.props.getProperty("zenhub_token");
         this.column = this.props.getProperty("filter_column");
+
+        log.info("Filtering on " + this.column);
     }
 
     public JsonArray removeUnwantedTickets() throws IOException {
@@ -45,9 +48,9 @@ public class LookupTickets {
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("x-authentication-token", this.zenhub_auth_token);
 
-        for (JsonElement element : this.githubtickets) {
-            int repo_id = this.getRepositoryID(element);
-            int issue_number = this.getIssueNumber(element);
+        for (JsonElement githubticket : this.githubtickets) {
+            int repo_id = this.getRepositoryID(githubticket);
+            int issue_number = this.getIssueNumber(githubticket);
 
             String zenhub_uri = "/p1/repositories/" + repo_id + "/issues/" + issue_number;
             URL url = new URL(zenhub_issue_url + zenhub_uri);
@@ -57,19 +60,19 @@ public class LookupTickets {
             if (zenhub_issue != null && HttpHelper.wasRequestSuccessful(zenhub_issue)) {
                 String body = (String) zenhub_issue.get(HttpHelper.BODY);
                 JsonObject zenhub_issue_json = JsonParser.parseString(body).getAsJsonObject();
-                isTicketInDesiredColumn(zenhub_issue_json, filterTickets);
+                isTicketInDesiredColumn(zenhub_issue_json, githubticket.getAsJsonObject(), filterTickets);
             }
         }
         
         return filterTickets;
     }
 
-    public void isTicketInDesiredColumn(JsonObject zenhub_issue_json, JsonArray filterTickets) {
+    public void isTicketInDesiredColumn(JsonObject zenhub_issue_json, JsonObject githubticket, JsonArray filterTickets) {
         if (zenhub_issue_json != null && zenhub_issue_json.size() > 0 && filterTickets != null) {
             String pipeline = getPipelineName(zenhub_issue_json);
 
             if (isInCorrectPipeline(pipeline, this.column)) {
-                filterTickets.add(zenhub_issue_json);
+                filterTickets.add(githubticket);
             }
         }
     }

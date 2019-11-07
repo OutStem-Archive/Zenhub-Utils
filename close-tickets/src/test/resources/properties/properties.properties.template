@@ -1,8 +1,10 @@
 [GITHUB]
 github_base_url=https://api.github.com
 github_token=cGF0LWxlZ286NTczZGFmMTNmM2Q1MDVjYzYxYzM5YmUxNzY1NGIyZTdiNWNlMDQzMQ==
+github_org=AES-Outreach
+github_type=user
 
 [ZENHUB]
 zenhub_base_url=https://api.zenhub.io
 zenhub_token=5cbd760540628af29f026e680308deef88b8ec72fd94e3f54febe7089f1ea1558a1b45e5ada7231f
-filter_column=QA
+filter_column=New Issues
