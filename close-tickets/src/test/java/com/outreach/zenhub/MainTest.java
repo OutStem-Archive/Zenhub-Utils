@@ -1,9 +1,7 @@
 package com.outreach.zenhub;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
 import java.util.Map;
 import java.util.Properties;
 
@@ -14,6 +12,9 @@ import org.junit.Test;
  */
 public class MainTest
 {
+
+    public final String URI = "/close-tickets/src/test/resources/properties/properties.properties";
+
     @Test
     public void testImproperCLIConversion() {
         String[] args = {
@@ -50,9 +51,17 @@ public class MainTest
 
     @Test
     public void testReadProps() {
-        Properties props = Main.getPropertiesFile("C:\Users\Pat\Documents/repos/Zenhub-Utils/close-tickets/src/test/resources/properties/properties.properties");
+        String path = System.getProperty("user.dir") + URI ;
+        Properties props = Main.getPropertiesFile(path);
         String github_base_url = props.getProperty("github_base_url");
 
         assertEquals("https://api.github.com", github_base_url);
     }
+
+    @Test(expected = java.lang.IllegalArgumentException.class)
+    public void testReadPropsNull() {
+        Main.getPropertiesFile(null);
+    }
+
+    
 }

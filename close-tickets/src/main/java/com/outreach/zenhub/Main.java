@@ -23,6 +23,8 @@ public class Main {
         Map<String, String> parsed_args = Main.getCLIMap(args);
 
         Properties props = Main.getPropertiesFile(parsed_args.get("properties_file"));
+
+        
     }
 
     /**
