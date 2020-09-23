@@ -16,9 +16,3 @@ jobs:
     name: Test Close Tickets App
 stages:
 - test
-notifications:
-  slack:
-    secure: C72dKteyuQsVzv5bBX3lVXUAstHojycugP/4zF4bmrRBF4zjuarOotBShXIx3ctHmVac/jQke6dlHtvr0w4TKrENsGNbuWlnmimivrNrsWBv4dVWalQvSMDXiE2DuTBtg8Cl4eJtGJX34F0YVozMzBCd8EU5LAfB44GO0HQhUi9/xECz7hzYyyMGbpYTO6RtJW67UnupfEgRJcJPZWh+HNMc2gIt78QwtAiIOuLpK24V2QOB+ZMUNhaGKW9BjqEkYsSYTsXZKUO2KfBs3ENwXKnoJHP++eLarXab6kJOP4roN5X2Tw7mMTHo+mCQsDKeWixRleU64aZnLyB10EH9WaEeWp+FIxvctfv59c/liCFNwKR8Mjt6QQNDWH3OMn08jv3oC7jFe02sHQHq2Mf8mdKoE7fRDUPrYukQhYB3BYEG7C3uEpxomL9d9CmsW71u1mjK6W4eFSrb1u2KNkaSBII89i540GZ/R47aU+gjMsJs6S5VsgDN2oi2iNviLxi6/JCza8eUSw+khXBstNqsTofOs88EmiurgnIr14XG//hxjS5uLY9NHplcCUcBMrzI2cCpZV9dDjTf+aE5EMR3eevdTKu40RZYM+75tSOIB7Kauwr8wU742rSShZhwk7P9XtdJh1bJ9TJcj4ZoAH4Mv74MS68F3vttd2jICnAsesI=
-  email:
-    recipients:
-    - patrique.legault@uottawa.ca
